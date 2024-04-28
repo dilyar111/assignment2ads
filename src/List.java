@@ -1,4 +1,4 @@
-public interface MyList<T> extends Iterable<T>{
+interface MyList<T> extends Iterable<T> {
     void addElement(T data);
 
     void add(int index, T item);
@@ -21,6 +21,8 @@ public interface MyList<T> extends Iterable<T>{
 
     void removeLast();
 
+    void remove(); // Добавленный метод remove()
+
     void sort();
 
     int lastIndexOf(Object object);
@@ -33,3 +35,4 @@ public interface MyList<T> extends Iterable<T>{
 
     int size();
 }
+

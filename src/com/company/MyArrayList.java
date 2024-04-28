@@ -1,63 +1,35 @@
 package com.company;
 
-import java.util.Arrays;
-import java.util.NoSuchElementException;
+import java.util.*;
 
-public class MyArrayList<T> implements MyList<T> {
+public class MyArrayList<T> {
+    private static final int DEFAULT_CAPACITY = 10;
 
-    private T[] data;
+    private Object[] array;
     private int size;
 
     public MyArrayList() {
-        this(10); // Default initial capacity
-    }
-
-    public MyArrayList(int initialCapacity) {
-        if (initialCapacity < 0) {
-            throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity);
-        }
-        data = (T[]) new Object[initialCapacity];
+        array = new Object[DEFAULT_CAPACITY];
         size = 0;
     }
 
-    private void ensureCapacity(int minCapacity) {
-        int oldCapacity = data.length;
-        if (minCapacity > oldCapacity) {
-            int newCapacity = oldCapacity + (oldCapacity >> 1); // Increase by 50%
-            if (newCapacity < minCapacity) {
-                newCapacity = minCapacity;
-            }
-            data = Arrays.copyOf(data, newCapacity);
-        }
-    }
-
-    private void checkIndex(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-        }
-    }
-
-    private void checkIndexForAdd(int index) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-        }
-    }
-
-    public void addElement(T element) {
+    public void add(T item) {
         ensureCapacity(size + 1);
-        data[size++] = element;
+        array[size++] = item;
     }
 
     public void set(int index, T item) {
         checkIndex(index);
-        data[index] = item;
+        array[index] = item;
     }
 
     public void add(int index, T item) {
-        checkIndexForAdd(index);
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
         ensureCapacity(size + 1);
-        System.arraycopy(data, index, data, index + 1, size - index);
-        data[index] = item;
+        System.arraycopy(array, index, array, index + 1, size - index);
+        array[index] = item;
         size++;
     }
 
@@ -66,86 +38,69 @@ public class MyArrayList<T> implements MyList<T> {
     }
 
     public void addLast(T item) {
-        addElement(item);
+        add(size, item);
     }
 
     public T get(int index) {
         checkIndex(index);
-        return data[index];
+        return (T) array[index];
     }
 
     public T getFirst() {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
-        return data[0];
+        return (T) array[0];
     }
 
     public T getLast() {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
-        return data[size - 1];
+        return (T) array[size - 1];
     }
-
 
     public void remove(int index) {
         checkIndex(index);
-        System.arraycopy(data, index + 1, data, index, size - index - 1);
-        data[--size] = null; // Help GC
+        int numMoved = size - index - 1;
+        if (numMoved > 0) {
+            System.arraycopy(array, index + 1, array, index, numMoved);
+        }
+        array[--size] = null;
     }
 
-
-    public void removeFirst() {
-        remove(0);
+    public void remove() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        array[--size] = null;
     }
 
     public void removeLast() {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
-        if (size == 1) {
-            data[0] = null; // Help GC
-        } else {
-            data[size - 1] = null; // Help GC
-        }
+        array[size - 1] = null;
         size--;
     }
 
     public void sort() {
-        // You can use any sorting algorithm here, such as Arrays.sort()
-        Arrays.sort(data, 0, size);
+        Arrays.sort(array, 0, size);
     }
 
     public int indexOf(Object object) {
-        if (object == null) {
-            for (int i = 0; i < size; i++) {
-                if (data[i] == null) {
-                    return i;
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (object.equals(data[i])) {
-                    return i;
-                }
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(array[i], object)) {
+                return i;
             }
         }
         return -1;
     }
 
     public int lastIndexOf(Object object) {
-        if (object == null) {
-            for (int i = size - 1; i >= 0; i--) {
-                if (data[i] == null) {
-                    return i;
-                }
-            }
-        } else {
-            for (int i = size - 1; i >= 0; i--) {
-                if (object.equals(data[i])) {
-                    return i;
-                }
+        for (int i = size - 1; i >= 0; i--) {
+            if (Objects.equals(array[i], object)) {
+                return i;
             }
         }
         return -1;
@@ -156,11 +111,11 @@ public class MyArrayList<T> implements MyList<T> {
     }
 
     public Object[] toArray() {
-        return Arrays.copyOf(data, size);
+        return Arrays.copyOf(array, size);
     }
 
     public void clear() {
-        Arrays.fill(data, 0, size, null); // Help GC
+        Arrays.fill(array, 0, size, null);
         size = 0;
     }
 
@@ -168,8 +123,23 @@ public class MyArrayList<T> implements MyList<T> {
         return size;
     }
 
-    public boolean isEmpty() {
+    private boolean isEmpty() {
         return size == 0;
     }
 
+    private void ensureCapacity(int minCapacity) {
+        if (minCapacity > array.length) {
+            int newCapacity = array.length + (array.length >> 1);
+            if (newCapacity < minCapacity) {
+                newCapacity = minCapacity;
+            }
+            array = Arrays.copyOf(array, newCapacity);
+        }
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
 }

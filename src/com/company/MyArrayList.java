@@ -69,7 +69,7 @@ public class MyArrayList<T> {
         array[--size] = null;
     }
 
-    public void remove() {
+    public void removeFirst() {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
@@ -123,7 +123,7 @@ public class MyArrayList<T> {
         return size;
     }
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return size == 0;
     }
 
@@ -142,4 +142,6 @@ public class MyArrayList<T> {
             throw new IndexOutOfBoundsException();
         }
     }
+
+
 }

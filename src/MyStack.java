@@ -1,40 +1,100 @@
-import com.company.MyArrayList;
+import java.util.*;
 
-import java.util.NoSuchElementException;
-
-public class MyStack<T> {
-
-    private MyArrayList<T> list;
+public class MyStack<T> implements MyList<T> {
+    private final LinkedList<T> stack;
 
     public MyStack() {
-        list = new MyArrayList<>();
+        stack = new LinkedList<>();
     }
 
-    public void push(T item) {
-        list.addLast(item); // Adding an element to the end of the list
+    @Override
+    public void addElement(T data) {
+        stack.push(data);
     }
 
-    public T pop() {
-        if (isEmpty()) {
-            throw new NoSuchElementException("Stack is empty");
+
+    public void add(int index, T item) {
+        throw new UnsupportedOperationException("Stack does not support adding elements at a specific index.");
+    }
+
+
+    public void set(int index, T item) {
+        throw new UnsupportedOperationException("Stack does not support setting elements at a specific index.");
+    }
+
+
+    public void addFirst(T item) {
+        throw new UnsupportedOperationException("Stack does not support adding elements at the beginning.");
+    }
+
+
+    public void addLast(T item) {
+        throw new UnsupportedOperationException("Stack does not support adding elements at the end.");
+    }
+
+
+    public T get(int index) {
+        throw new UnsupportedOperationException("Stack does not support random access.");
+    }
+
+    public T getFirst() {
+        if (stack.isEmpty()) {
+            throw new NoSuchElementException("Stack is empty.");
         }
-        T item = list.getLast(); // Getting the last element
-        list.removeLast(); //Removing the last element from the list
-        return item;
+        return stack.peek();
     }
 
-    public T peek() {
-        if (isEmpty()) {
-            throw new NoSuchElementException("Stack is empty");
+
+    public T getLast() {
+        throw new UnsupportedOperationException("Stack does not support accessing the last element.");
+    }
+
+    public void remove(int index) {
+        throw new UnsupportedOperationException("Stack does not support removing elements at a specific index.");
+    }
+
+    public void removeFirst() {
+        if (stack.isEmpty()) {
+            throw new NoSuchElementException("Stack is empty.");
         }
-        return list.getLast(); // Returning the last element without removing it
+        stack.pop();
+    }
+
+    public void removeLast() {
+        throw new UnsupportedOperationException("Stack does not support removing elements at the end.");
+    }
+
+    public void remove() {
+        removeFirst();
+    }
+
+    public void sort() {
+        throw new UnsupportedOperationException("Stack does not support sorting.");
+    }
+
+    public int lastIndexOf(Object object) {
+        throw new UnsupportedOperationException("Stack does not support lastIndexOf operation.");
+    }
+
+    public boolean exists(Object object) {
+        return stack.contains(object);
+    }
+
+    public Object[] toArray() {
+        return stack.toArray();
+    }
+
+    public void clear() {
+        stack.clear();
     }
 
     public int size() {
-        return list.size();
+        return stack.size();
     }
 
-    public boolean isEmpty() {
-        return list.isEmpty();
+
+    public Iterator<T> iterator() {
+        return stack.iterator();
     }
 }
+

@@ -1,2 +1,2 @@
-public class Iterable<T> {
+public interface Iterable<T> {
 }

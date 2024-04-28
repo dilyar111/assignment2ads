@@ -1,4 +1,4 @@
-interface MyList<T> extends Iterable<T> {
+public interface MyList<T> extends Iterable<T> {
     void addElement(T data);
 
     void add(int index, T item);

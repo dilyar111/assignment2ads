@@ -4,11 +4,11 @@ import java.util.*;
 
 public class MyLinkedList<T> {
 
-
+    // Nested Node class to represent elements in the linked list
     private static class Node<T> {
         T data;
         Node<T> next;
-
+        // Constructor to initialize the node with data
         public Node(T data) {
             this.data = data;
             this.next = null;
@@ -29,19 +29,19 @@ public class MyLinkedList<T> {
     public void add(T item) {
         Node<T> newNode = new Node<>(item);
         if (isEmpty()) {
-            head = tail = newNode;
+            head = tail = newNode;// If list is empty, set head and tail to the new node
         } else {
-            tail.next = newNode;
-            tail = newNode;
+            tail.next = newNode;// Append the new node to the end of the list
+            tail = newNode;// Update tail to the new node
         }
         size++;
     }
 
     // Set element value by index
     public void set(int index, T item) {
-        checkIndex(index);
-        Node<T> current = getNode(index);
-        current.data = item;
+        checkIndex(index);// Check if index is valid
+        Node<T> current = getNode(index);// Get the node at the specified index
+        current.data = item;// Update the data of the node
     }
 
     // Adding an element by index
@@ -218,16 +218,19 @@ public class MyLinkedList<T> {
         return size;
     }
 
+    // Check if the list is empty
     private boolean isEmpty() {
         return size == 0;
     }
 
+    // Check if the index is valid
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
     }
 
+    // Get the node at a specified index
     private Node<T> getNode(int index) {
         Node<T> current = head;
         for (int i = 0; i < index; i++) {

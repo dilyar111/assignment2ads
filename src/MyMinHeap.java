@@ -1,69 +1,71 @@
-import java.util.*;
+import java.util.*; // Importing necessary Java utilities
 
 public class MyMinHeap<T extends Comparable<T>> {
+
     private ArrayList<T> heap;
 
     public MyMinHeap() {
         heap = new ArrayList<>();
     }
 
-    public void addElement(T data) {
-        heap.add(data);
-        heapifyUp(heap.size() - 1);
+    public void addElement(T data) { // Method to add an element to the heap
+        heap.add(data); // Adding the element to the heap
+        heapifyUp(heap.size() - 1); // Performing heapifyUp operation to maintain heap property
     }
 
-    public T getMin() {
-        if (isEmpty()) {
-            throw new NoSuchElementException("Heap is empty.");
+    public T getMin() { // Method to get the minimum element from the heap
+        if (isEmpty()) { // Checking if the heap is empty
+            throw new NoSuchElementException("Heap is empty."); // Throwing exception if heap is empty
         }
-        return heap.get(0);
+        return heap.get(0); // Returning the minimum element from the heap
     }
 
-    public T removeMin() {
-        if (isEmpty()) {
-            throw new NoSuchElementException("Heap is empty.");
+    public T removeMin() { // Method to remove and return the minimum element from the heap
+        if (isEmpty()) { // Checking if the heap is empty
+            throw new NoSuchElementException("Heap is empty."); // Throwing exception if heap is empty
         }
-        T min = heap.get(0);
-        T last = heap.remove(heap.size() - 1);
-        if (!isEmpty()) {
-            heap.set(0, last);
-            heapifyDown(0);
+        T min = heap.get(0); // Storing the minimum element
+        T last = heap.remove(heap.size() - 1); // Removing the last element from the heap
+        if (!isEmpty()) { // Checking if the heap is not empty after removal
+            heap.set(0, last); // Replacing the root element with the last element
+            heapifyDown(0); // Performing heapifyDown operation to maintain heap property
         }
-        return min;
+        return min; // Returning the minimum element
     }
 
-    public boolean isEmpty() {
-        return heap.isEmpty();
+    public boolean isEmpty() { // Method to check if the heap is empty
+        return heap.isEmpty(); // Returning true if the heap is empty, false otherwise
     }
 
-    private void heapifyUp(int index) {
-        int parent = (index - 1) / 2;
-        while (index > 0 && heap.get(index).compareTo(heap.get(parent)) < 0) {
-            swap(index, parent);
-            index = parent;
-            parent = (index - 1) / 2;
-        }
-    }
-
-    private void heapifyDown(int index) {
-        int left = 2 * index + 1;
-        int right = 2 * index + 2;
-        int smallest = index;
-        if (left < heap.size() && heap.get(left).compareTo(heap.get(smallest)) < 0) {
-            smallest = left;
-        }
-        if (right < heap.size() && heap.get(right).compareTo(heap.get(smallest)) < 0) {
-            smallest = right;
-        }
-        if (smallest != index) {
-            swap(index, smallest);
-            heapifyDown(smallest);
+    private void heapifyUp(int index) { // Method to restore heap property by moving an element up
+        int parent = (index - 1) / 2; // Calculating the parent index of the current element
+        while (index > 0 && heap.get(index).compareTo(heap.get(parent)) < 0) { // Looping until the current element is at its correct position
+            swap(index, parent); // Swapping the current element with its parent
+            index = parent; // Updating index to its parent
+            parent = (index - 1) / 2; // Updating parent index
         }
     }
 
-    private void swap(int i, int j) {
-        T temp = heap.get(i);
-        heap.set(i, heap.get(j));
-        heap.set(j, temp);
+    private void heapifyDown(int index) { // Method to restore heap property by moving an element down
+        int left = 2 * index + 1; // Calculating the left child index
+        int right = 2 * index + 2; // Calculating the right child index
+        int smallest = index; // Initializing smallest as the current index
+        if (left < heap.size() && heap.get(left).compareTo(heap.get(smallest)) < 0) { // Checking if left child exists and smaller than the current element
+            smallest = left; // Updating smallest index
+        }
+        if (right < heap.size() && heap.get(right).compareTo(heap.get(smallest)) < 0) { // Checking if right child exists and smaller than the current element or left child
+            smallest = right; // Updating smallest index
+        }
+        if (smallest != index) { // Checking if smallest index has changed
+            swap(index, smallest); // Swapping the current element with the smallest child
+            heapifyDown(smallest); // Recursively heapifying down the subtree rooted at the smallest child
+        }
+    }
+
+    private void swap(int i, int j) { // Method to swap elements at given indices
+        T temp = heap.get(i); // Storing element at index i in temp variable
+        heap.set(i, heap.get(j)); // Setting element at index j to index i
+        heap.set(j, temp); // Setting temp variable to index j
     }
 }
+
